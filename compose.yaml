@@ -1,0 +1,25 @@
+services:
+  nodesense:
+    build:
+      context: .
+      args: {TARGETARCH: amd64}
+    container_name: nodesense
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      AGENT_ID: ${AGENT_ID:-server1}
+      AGENT_NAME: ${AGENT_NAME:-server1}
+      MQTT_HOST: ${MQTT_HOST:-127.0.0.1}
+      MQTT_PORT: ${MQTT_PORT:-1883}
+      MQTT_USERNAME: ${MQTT_USERNAME:-}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
+      MQTT_BASE_TOPIC: ${MQTT_BASE_TOPIC:-nodesense}
+      TZ: ${TZ:-America/Sao_Paulo}
+      DATA_DIR: /data
+      HOST_SYS: /host/sys
+      SPEEDTEST_TIMEOUT: ${SPEEDTEST_TIMEOUT:-180}
+    volumes:
+      - nodesense-data:/data
+      - /sys:/host/sys:ro
+volumes:
+  nodesense-data:
