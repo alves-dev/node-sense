@@ -21,6 +21,8 @@ O workflow lê a versão de `pyproject.toml` e publica automaticamente as imagen
 
 O discovery é retido em `homeassistant/device/nodesense_<agent_id>/config`. Estados ficam em `nodesense/<agent_id>/system/state` e `speedtest/state`; comandos ficam em `speedtest/cron/set`, `speedtest/enabled/set` e `speedtest/run/set`. Comandos não são retidos. O agente publica Last Will `offline` e `online` após reconexão.
 
+A lista completa de entidades, tópicos, ícones, unidades e payloads está em [docs/home-assistant-entities.md](docs/home-assistant-entities.md).
+
 O cron tem cinco campos e, por padrão, é `0 */4 * * *`. A frequência mínima padrão é 30 minutos. A configuração editável é salva atomicamente em `/data/config.json`. Uma execução por host é permitida; um disparo concorrente é ignorado.
 
 As entidades de conectividade usam o prefixo `Internet —` e ícones específicos de rede. A temperatura usa `CPU/SoC — Temperature` e prioriza `coretemp/Package id 0`, `x86_pkg_temp` e zonas explicitamente identificadas como CPU/SoC; zonas ACPI/ambiente e Wi-Fi ficam como fallback inferior.
