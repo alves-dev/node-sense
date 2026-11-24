@@ -10,11 +10,14 @@ services:
     group_add:
       - "${DOCKER_GID:-999}"
     restart: unless-stopped
-    network_mode: host
+    ports:
+      - "9130:9130"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       AGENT_ID: ${AGENT_ID:-book4}
       AGENT_NAME: ${AGENT_NAME:-Book 4}
-      MQTT_HOST: ${MQTT_HOST:-127.0.0.1}
+      MQTT_HOST: ${MQTT_HOST:-host.docker.internal}
       MQTT_PORT: ${MQTT_PORT:-1883}
       MQTT_USERNAME: ${MQTT_USERNAME:-}
       MQTT_PASSWORD: ${MQTT_PASSWORD:-}

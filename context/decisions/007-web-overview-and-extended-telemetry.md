@@ -39,6 +39,9 @@ The page and `/api/state` were smoke-tested in a container. Host OS, model,
 kernel, uptime, CPU, memory and storage were observed successfully. Docker
 container listing works when the supplied supplemental group matches the socket
 GID; otherwise the UI reports container data as unavailable rather than zero.
+Compose uses Docker's default network with host port `9130` published. MQTT
+reachability is configured through `MQTT_HOST` instead of relying on host
+network mode.
 
 ## Related
 

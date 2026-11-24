@@ -13,9 +13,9 @@ docker compose pull
 docker compose up -d
 ```
 
-O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para listar containers, defina `DOCKER_GID` com `stat -c '%g' /var/run/docker.sock`; o acesso ao socket é somente leitura, mas concede visibilidade equivalente ao grupo Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
+O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, publica a página na porta `9130`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. O NodeSense usa a rede padrão do Docker; configure `MQTT_HOST` para um broker alcançável a partir do container. O valor padrão `host.docker.internal` atende um broker publicado no host Linux pelo Compose. Para listar containers, defina `DOCKER_GID` com `stat -c '%g' /var/run/docker.sock`; o acesso ao socket é somente leitura, mas concede visibilidade equivalente ao grupo Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
 
-O NodeSense também fornece uma página de visão geral em `http://localhost:9130`, com sistema, kernel, modelo, uptime, horário da máquina, CPU, memória, armazenamento, containers Docker e status do teste de internet. O endpoint JSON usado pela página fica em `/api/state`. A porta interna é fixa em `9130`; com o Compose atual (`network_mode: host`) ela fica diretamente disponível no host.
+O NodeSense também fornece uma página de visão geral em `http://localhost:9130`, com sistema, kernel, modelo, uptime, horário da máquina, CPU, memória, armazenamento, containers Docker e status do teste de internet. O endpoint JSON usado pela página fica em `/api/state`. A porta interna é fixa em `9130` e é publicada pelo Compose.
 
 A página também fornece um favicon próprio do NodeSense para o navegador.
 

@@ -17,6 +17,8 @@
   deployment variable.
 - Per-container memory details are kept local to the web dashboard and are not
   published to Home Assistant.
+- Compose now uses the default Docker network and publishes web port `9130`;
+  MQTT connectivity is configured through `MQTT_HOST`.
 
 ## 0.1.0 - 2026-11-24
 
