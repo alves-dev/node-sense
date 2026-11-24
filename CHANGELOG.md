@@ -11,6 +11,9 @@
 
 ### Changed
 
+- Setuptools package discovery is restricted to the `nodesense` package so the
+  CI editable install does not treat documentation and static assets as Python
+  packages.
 - Internal container paths and the web port are fixed conventions; only the
   Docker socket GID needs host-specific configuration for container listing.
 - Speedtest timeout is fixed at 180 seconds and is no longer exposed as a
