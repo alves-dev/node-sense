@@ -7,10 +7,13 @@ Agente leve de telemetria para hosts Linux, integrado ao Home Assistant por MQTT
 ```bash
 cp .env.example .env
 docker run -d --name nodesense-mqtt -p 1883:1883 -v "$PWD/mosquitto.local.conf:/mosquitto/config/mosquitto.conf:ro" eclipse-mosquitto:2
-docker compose up -d --build
+docker compose pull
+docker compose up -d
 ```
 
-O Compose usa `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
+O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
+
+O workflow publica automaticamente as imagens `linux/amd64` e `linux/arm64` no GHCR após o CI passar. O pacote é publicado como `ghcr.io/alves-dev/nodesense`; a visibilidade pública do pacote pode ser ajustada nas configurações de Packages do GitHub.
 
 ## MQTT e HA
 

@@ -4,6 +4,7 @@
 
 ### Added
 
+- GitHub Actions workflow for publishing multi-architecture images to GHCR.
 - NodeSense agent with MQTT availability, reconnect and Home Assistant MQTT Discovery.
 - Stable host identity and a single device per agent.
 - CPU/SoC temperature collection with preference for CPU package sensors.

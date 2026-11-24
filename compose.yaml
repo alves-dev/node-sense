@@ -1,5 +1,6 @@
 services:
   nodesense:
+    image: ${NODESENSE_IMAGE:-ghcr.io/alves-dev/nodesense:latest}
     build:
       context: .
       args: {TARGETARCH: amd64}
