@@ -12,8 +12,8 @@ services:
     restart: unless-stopped
     network_mode: host
     environment:
-      AGENT_ID: ${AGENT_ID:-server1}
-      AGENT_NAME: ${AGENT_NAME:-server1}
+      AGENT_ID: ${AGENT_ID:-book4}
+      AGENT_NAME: ${AGENT_NAME:-Book 4}
       MQTT_HOST: ${MQTT_HOST:-127.0.0.1}
       MQTT_PORT: ${MQTT_PORT:-1883}
       MQTT_USERNAME: ${MQTT_USERNAME:-}
