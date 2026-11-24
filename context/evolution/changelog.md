@@ -9,6 +9,7 @@
 - Home Assistant MQTT Discovery and controls.
 - Persistent configuration, availability and reconnect behavior.
 - Docker deployment and GHCR multi-architecture publication.
+- Host overview page and extended system/container telemetry.
 
 ### Tech Stack Documented
 
@@ -23,6 +24,16 @@
 - Atomic JSON persistence.
 - Safe bounded external command execution.
 - Ranked thermal sensor selection.
+- Polling JSON overview page.
+
+### Configuration Simplification
+
+- Fixed internal paths for web, persistence, host sysfs, host root and Docker
+  socket mounts.
+- Kept `DOCKER_GID` as the only host-specific mount permission value needed for
+  container listing.
+- Fixed the Speedtest timeout at 180 seconds instead of exposing another
+  deployment variable.
 
 ### Proposal Reconciliation
 

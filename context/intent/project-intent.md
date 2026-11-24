@@ -15,7 +15,7 @@ interface already used to operate the homelab.
 
 ## Current State
 
-The project is an active V1 implementation. It runs as a Docker container,
+The project is an active V2 implementation. It runs as a Docker container,
 communicates through MQTT Discovery, persists editable schedule settings, and
 publishes multi-architecture images for Linux amd64 and arm64 through GHCR.
 
@@ -27,6 +27,7 @@ publishes multi-architecture images for Linux amd64 and arm64 through GHCR.
 - Stable MQTT availability and discovery for one device per host.
 - Persistent configuration and local protection against concurrent tests.
 - Docker deployment and CI publication for amd64 and arm64.
+- Local host overview page for quick operational inspection.
 
 ## Related
 

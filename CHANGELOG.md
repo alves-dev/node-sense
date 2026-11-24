@@ -1,9 +1,26 @@
 # Changelog
 
+## 0.2.0 - 2026-11-24
+
+### Added
+
+- Local host overview page and JSON status endpoint.
+- Extended system, storage and Docker container telemetry.
+
+### Changed
+
+- Internal container paths and the web port are fixed conventions; only the
+  Docker socket GID needs host-specific configuration for container listing.
+- Speedtest timeout is fixed at 180 seconds and is no longer exposed as a
+  deployment variable.
+
 ## 0.1.0 - 2026-11-24
 
 ### Added
 
+- Optional host overview web page on port 9130 with a JSON status endpoint.
+- System telemetry for OS/kernel, model, uptime, machine time, CPU, memory,
+  storage and Docker containers.
 - GitHub Actions workflow for publishing multi-architecture images to GHCR.
 - NodeSense agent with MQTT availability, reconnect and Home Assistant MQTT Discovery.
 - Stable host identity and a single device per agent.

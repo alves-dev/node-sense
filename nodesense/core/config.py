@@ -27,11 +27,14 @@ class Settings:
     mqtt_base_topic: str; data_dir: Path; timezone: str; sensor_path: str | None
     temperature_interval: int; speedtest_command: str; speedtest_timeout: int
     minimum_cron_minutes: int; default_cron: str; enabled: bool
+    web_host: str = "0.0.0.0"; web_port: int = 9130
+    docker_socket: str = "/var/run/docker.sock"; storage_path: str = "/host/root"
+    host_os_release: str = "/host/root/etc/os-release"
 
     @classmethod
     def from_env(cls) -> "Settings":
         name = os.getenv("AGENT_NAME") or socket.gethostname()
-        return cls(safe_id(os.getenv("AGENT_ID") or name), name, os.getenv("MQTT_HOST", "localhost"), int(os.getenv("MQTT_PORT", "1883")), os.getenv("MQTT_USERNAME") or None, os.getenv("MQTT_PASSWORD") or None, os.getenv("MQTT_TLS", "false").lower() in {"1", "true", "yes"}, os.getenv("MQTT_BASE_TOPIC", "nodesense").strip("/") or "nodesense", Path(os.getenv("DATA_DIR", "/data")), os.getenv("TZ", "America/Sao_Paulo"), os.getenv("SENSOR_PATH") or None, int(os.getenv("TEMPERATURE_INTERVAL", "30")), os.getenv("SPEEDTEST_COMMAND", "speedtest"), int(os.getenv("SPEEDTEST_TIMEOUT", "180")), int(os.getenv("MINIMUM_CRON_MINUTES", "30")), os.getenv("SPEEDTEST_CRON", "0 */4 * * *"), os.getenv("SPEEDTEST_ENABLED", "true").lower() not in {"0", "false", "off"})
+        return cls(safe_id(os.getenv("AGENT_ID") or name), name, os.getenv("MQTT_HOST", "localhost"), int(os.getenv("MQTT_PORT", "1883")), os.getenv("MQTT_USERNAME") or None, os.getenv("MQTT_PASSWORD") or None, os.getenv("MQTT_TLS", "false").lower() in {"1", "true", "yes"}, os.getenv("MQTT_BASE_TOPIC", "nodesense").strip("/") or "nodesense", Path("/data"), os.getenv("TZ", "America/Sao_Paulo"), os.getenv("SENSOR_PATH") or None, int(os.getenv("TEMPERATURE_INTERVAL", "30")), os.getenv("SPEEDTEST_COMMAND", "speedtest"), 180, int(os.getenv("MINIMUM_CRON_MINUTES", "30")), os.getenv("SPEEDTEST_CRON", "0 */4 * * *"), os.getenv("SPEEDTEST_ENABLED", "true").lower() not in {"0", "false", "off"})
 
 class ConfigStore:
     def __init__(self, settings: Settings):

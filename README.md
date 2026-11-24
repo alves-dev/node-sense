@@ -2,7 +2,7 @@
 
 ![NodeSense](<NodeSense Neon Tech Banner.webp>)
 
-Agente leve de telemetria para hosts Linux, integrado ao Home Assistant por MQTT Discovery. A V1 publica hostname e temperatura disponível, executa a CLI oficial Ookla e expõe download, upload, ping, jitter, perda, servidor, status, cron, switch e botão manual como um único dispositivo no HA.
+Agente leve de telemetria para hosts Linux, integrado ao Home Assistant por MQTT Discovery. A V2 publica identidade, temperatura, visão geral do host, containers e resultados da CLI oficial Ookla, além de expor download, upload, ping, jitter, perda, servidor, status, cron, switch e botão manual no HA.
 
 ## Execução local
 
@@ -13,7 +13,13 @@ docker compose pull
 docker compose up -d
 ```
 
-O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
+O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para listar containers, defina `DOCKER_GID` com `stat -c '%g' /var/run/docker.sock`; o acesso ao socket é somente leitura, mas concede visibilidade equivalente ao grupo Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
+
+O NodeSense também fornece uma página de visão geral em `http://localhost:9130`, com sistema, kernel, modelo, uptime, horário da máquina, CPU, memória, armazenamento, containers Docker e status do teste de internet. O endpoint JSON usado pela página fica em `/api/state`. A porta interna é fixa em `9130`; com o Compose atual (`network_mode: host`) ela fica diretamente disponível no host.
+
+Os caminhos internos `/data`, `/host/sys`, `/host/root` e `/var/run/docker.sock` são convencionados pela imagem e não precisam ser configurados. `/data` guarda a configuração; `/host/sys` fornece sensores; `/host/root` permite identificar o sistema e medir o armazenamento do host; e o socket Docker permite listar containers. Os três últimos são montados somente leitura pelo Compose.
+
+O timeout do Speedtest é fixo em 180 segundos. A configuração mínima do Compose fica limitada à identidade do agente, MQTT, timezone e `DOCKER_GID`.
 
 O workflow lê a versão de `pyproject.toml` e publica automaticamente as imagens `linux/amd64` e `linux/arm64` no GHCR com as tags `latest`, `<versão-do-projeto>` e `sha-<commit>`. O pacote é publicado como `ghcr.io/alves-dev/nodesense`; a visibilidade pública do pacote pode ser ajustada nas configurações de Packages do GitHub.
 
@@ -22,6 +28,8 @@ O workflow lê a versão de `pyproject.toml` e publica automaticamente as imagen
 O discovery é retido em `homeassistant/device/nodesense_<agent_id>/config`. Estados ficam em `nodesense/<agent_id>/system/state` e `speedtest/state`; comandos ficam em `speedtest/cron/set`, `speedtest/enabled/set` e `speedtest/run/set`. Comandos não são retidos. O agente publica Last Will `offline` e `online` após reconexão.
 
 A lista completa de entidades, tópicos, ícones, unidades e payloads está em [docs/home-assistant-entities.md](docs/home-assistant-entities.md).
+
+Uptime, CPU, memória, armazenamento e quantidade de containers também são publicados no estado do sistema e possuem entidades no HA.
 
 O cron tem cinco campos e, por padrão, é `0 */4 * * *`. A frequência mínima padrão é 30 minutos. A configuração editável é salva atomicamente em `/data/config.json`. Uma execução por host é permitida; um disparo concorrente é ignorado.
 

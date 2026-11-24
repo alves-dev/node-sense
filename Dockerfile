@@ -14,6 +14,8 @@ COPY pyproject.toml requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY nodesense ./nodesense
 COPY main.py ./
+RUN mkdir -p static
+COPY ["NodeSense Neon Tech Banner.webp", "static/banner.webp"]
 RUN useradd --system --uid 10001 nodesense && mkdir /data && chown nodesense:nodesense /data
 USER nodesense
 VOLUME ["/data"]
