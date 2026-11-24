@@ -1,6 +1,6 @@
 # NodeSense
 
-![NodeSense](<NodeSense Neon Tech Banner.webp>)
+![NodeSense](<static/nodesense-logo.png>)
 
 Agente leve de telemetria para hosts Linux, integrado ao Home Assistant por MQTT Discovery. A V2 publica identidade, temperatura, visão geral do host, containers e resultados da CLI oficial Ookla, além de expor download, upload, ping, jitter, perda, servidor, status, cron, switch e botão manual no HA.
 
@@ -30,6 +30,8 @@ O discovery é retido em `homeassistant/device/nodesense_<agent_id>/config`. Est
 A lista completa de entidades, tópicos, ícones, unidades e payloads está em [docs/home-assistant-entities.md](docs/home-assistant-entities.md).
 
 Uptime, CPU, memória, armazenamento e quantidade de containers também são publicados no estado do sistema e possuem entidades no HA.
+
+A tabela da página web também mostra o uso atual de memória de cada container em MB. Esse detalhe é local à página e não é enviado ao Home Assistant.
 
 O cron tem cinco campos e, por padrão, é `0 */4 * * *`. A frequência mínima padrão é 30 minutos. A configuração editável é salva atomicamente em `/data/config.json`. Uma execução por host é permitida; um disparo concorrente é ignorado.
 

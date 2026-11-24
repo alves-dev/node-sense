@@ -103,21 +103,41 @@ class DockerCollector:
     def __init__(self, socket_path: str):
         self.socket_path = socket_path
 
+    def _request_json(self, path: str):
+        import socket as socket_module
+        client = socket_module.socket(socket_module.AF_UNIX, socket_module.SOCK_STREAM)
+        try:
+            client.settimeout(2)
+            client.connect(self.socket_path)
+            request = f"GET {path} HTTP/1.0\r\nHost: docker\r\n\r\n".encode()
+            client.sendall(request)
+            response = b""
+            while chunk := client.recv(65536):
+                response += chunk
+            body = response.split(b"\r\n\r\n", 1)[1]
+            return json.loads(body)
+        finally:
+            client.close()
+
     def collect(self) -> list[dict] | None:
         if not Path(self.socket_path).exists():
             return None
         try:
-            import socket as socket_module
-            client = socket_module.socket(socket_module.AF_UNIX, socket_module.SOCK_STREAM)
-            client.settimeout(2)
-            client.connect(self.socket_path)
-            client.sendall(b"GET /containers/json?all=true HTTP/1.0\r\nHost: docker\r\n\r\n")
-            response = b""
-            while chunk := client.recv(65536):
-                response += chunk
-            client.close()
-            body = response.split(b"\r\n\r\n", 1)[1]
-            containers = json.loads(body)
-            return [{"name": (item.get("Names") or [item.get("Id", "unknown")])[0].lstrip("/"), "status": item.get("Status", item.get("State", "unknown")), "state": item.get("State", "unknown")} for item in containers]
-        except (OSError, ValueError, IndexError, json.JSONDecodeError):
+            containers = self._request_json("/containers/json?all=true")
+            result = []
+            for item in containers:
+                container = {"name": (item.get("Names") or [item.get("Id", "unknown")])[0].lstrip("/"), "status": item.get("Status", item.get("State", "unknown")), "state": item.get("State", "unknown")}
+                if container["state"] == "running" and item.get("Id"):
+                    try:
+                        stats = self._request_json(f"/containers/{item['Id']}/stats?stream=false")
+                        memory_stats = stats.get("memory_stats") or {}
+                        usage = memory_stats.get("usage")
+                        inactive_file = (memory_stats.get("stats") or {}).get("inactive_file", 0)
+                        if usage is not None:
+                            container["memory_mb"] = round(max(0, float(usage) - float(inactive_file)) / 1024 / 1024, 1)
+                    except (OSError, ValueError, IndexError, json.JSONDecodeError, KeyError, TypeError):
+                        pass
+                result.append(container)
+            return result
+        except (OSError, ValueError, IndexError, json.JSONDecodeError, TypeError):
             return None

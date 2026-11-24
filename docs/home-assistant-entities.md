@@ -67,6 +67,10 @@ manual test or apply an old configuration command.
 
 `system/state` contains the host identity and the selected temperature sensor:
 
+The web dashboard also shows current memory usage for each running Docker
+container in MB. This per-container detail is web-only and is not included in
+the Home Assistant MQTT payload.
+
 ```json
 {
   "hostname": "server1",

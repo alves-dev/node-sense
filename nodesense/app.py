@@ -50,7 +50,8 @@ class Agent:
         self.current_system["container_count"] = len(self.containers) if self.containers is not None else None
         if self.current_system.get("storage"):
             self.current_system.update({f"storage_{key}": value for key, value in self.current_system["storage"].items()})
-        self.mqtt.publish("system/state", self.current_system, retain=True)
+        mqtt_system = {key: value for key, value in self.current_system.items() if key != "containers"}
+        self.mqtt.publish("system/state", mqtt_system, retain=True)
         if self.store.enabled:
             current = next_run(self.store.cron, self.settings.timezone) if self.next_scheduled is None else self.next_scheduled
             if datetime.now(current.tzinfo) >= current:

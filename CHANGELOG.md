@@ -6,6 +6,7 @@
 
 - Local host overview page and JSON status endpoint.
 - Extended system, storage and Docker container telemetry.
+- Per-container Docker memory usage in the local web dashboard, displayed in MB.
 
 ### Changed
 
@@ -13,6 +14,8 @@
   Docker socket GID needs host-specific configuration for container listing.
 - Speedtest timeout is fixed at 180 seconds and is no longer exposed as a
   deployment variable.
+- Per-container memory details are kept local to the web dashboard and are not
+  published to Home Assistant.
 
 ## 0.1.0 - 2026-11-24
 

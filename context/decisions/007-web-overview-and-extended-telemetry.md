@@ -9,7 +9,7 @@ Home Assistant without adding a backend or a JavaScript build system.
 ## Decision
 
 Expose a standard-library HTTP server on fixed internal port `9130`, serving a
-static HTML page, the existing banner asset and a JSON `/api/state` endpoint.
+static HTML page, the NodeSense logo asset and a JSON `/api/state` endpoint.
 Collect OS/kernel, model, uptime, machine time, CPU, memory, storage and Docker
 container data in the agent and publish the relevant values through the
 existing retained `system/state` MQTT payload.
