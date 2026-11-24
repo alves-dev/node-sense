@@ -1,5 +1,7 @@
 # NodeSense
 
+![NodeSense](<NodeSense Neon Tech Banner.webp>)
+
 Agente leve de telemetria para hosts Linux, integrado ao Home Assistant por MQTT Discovery. A V1 publica hostname e temperatura disponível, executa a CLI oficial Ookla e expõe download, upload, ping, jitter, perda, servidor, status, cron, switch e botão manual como um único dispositivo no HA.
 
 ## Execução local
@@ -13,7 +15,7 @@ docker compose up -d
 
 O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `network_mode: host`, monta `/sys` somente leitura e mantém a configuração em um volume Docker. Para um registry privado, execute `docker login ghcr.io` antes do `pull`. Para construir a versão localmente, use `docker compose build` e depois `docker compose up -d`. Para outro host, altere `AGENT_ID`, `AGENT_NAME` e `MQTT_HOST`; o `AGENT_ID` deve ser único e estável.
 
-O workflow publica automaticamente as imagens `linux/amd64` e `linux/arm64` no GHCR após o CI passar. O pacote é publicado como `ghcr.io/alves-dev/nodesense`; a visibilidade pública do pacote pode ser ajustada nas configurações de Packages do GitHub.
+O workflow lê a versão de `pyproject.toml` e publica automaticamente as imagens `linux/amd64` e `linux/arm64` no GHCR com as tags `latest`, `<versão-do-projeto>` e `sha-<commit>`. O pacote é publicado como `ghcr.io/alves-dev/nodesense`; a visibilidade pública do pacote pode ser ajustada nas configurações de Packages do GitHub.
 
 ## MQTT e HA
 
