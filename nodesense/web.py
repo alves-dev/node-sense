@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 HTML = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NodeSense</title><style>
+<title>NodeSense</title><link rel="icon" href="/favicon.png" type="image/png"><style>
 :root{color-scheme:dark;--bg:#071326;--card:#0d2139;--line:#174362;--text:#e9f4ff;--muted:#8fa9bd;--cyan:#26e0d0;--green:#61ef76}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#123558 0,#071326 45%);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
 main{max-width:1180px;margin:auto;padding:28px}.hero{display:flex;align-items:center;gap:22px;margin-bottom:24px}.hero img{width:150px;height:92px;object-fit:cover;object-position:center top;border-radius:14px;border:1px solid #1b5473}.hero h1{margin:0;font-size:30px}.hero p{color:var(--muted);margin:5px 0}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}.card{background:linear-gradient(145deg,#102b47,#0a1b30);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 12px 35px #02091466}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.value{font-size:25px;font-weight:650;margin-top:8px}.wide{grid-column:1/-1}.bar{height:8px;background:#071321;border-radius:8px;overflow:hidden;margin-top:12px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:8px}.status{color:var(--green)}table{width:100%;border-collapse:collapse;margin-top:8px}td{padding:9px 4px;border-bottom:1px solid #173650}td:last-child{text-align:right;color:var(--cyan)}small{color:var(--muted)}
@@ -38,6 +38,9 @@ class WebServer:
                     body, content_type = json.dumps(owner.get_state(), ensure_ascii=False).encode(), "application/json; charset=utf-8"
                 elif path == "/logo.png":
                     try: body, content_type = Path(__file__).parent.parent / "static/nodesense-logo.png", "image/png"; body = body.read_bytes()
+                    except OSError: self.send_error(404); return
+                elif path == "/favicon.png":
+                    try: body, content_type = Path(__file__).parent.parent / "static/nodesense-favicon.png", "image/png"; body = body.read_bytes()
                     except OSError: self.send_error(404); return
                 else: self.send_error(404); return
                 self.send_response(200); self.send_header("Content-Type", content_type); self.send_header("Content-Length", str(len(body))); self.send_header("Cache-Control", "no-store"); self.end_headers(); self.wfile.write(body)

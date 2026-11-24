@@ -17,6 +17,8 @@ O Compose usa a imagem publicada em `ghcr.io/alves-dev/nodesense:latest`, `netwo
 
 O NodeSense também fornece uma página de visão geral em `http://localhost:9130`, com sistema, kernel, modelo, uptime, horário da máquina, CPU, memória, armazenamento, containers Docker e status do teste de internet. O endpoint JSON usado pela página fica em `/api/state`. A porta interna é fixa em `9130`; com o Compose atual (`network_mode: host`) ela fica diretamente disponível no host.
 
+A página também fornece um favicon próprio do NodeSense para o navegador.
+
 Os caminhos internos `/data`, `/host/sys`, `/host/root` e `/var/run/docker.sock` são convencionados pela imagem e não precisam ser configurados. `/data` guarda a configuração; `/host/sys` fornece sensores; `/host/root` permite identificar o sistema e medir o armazenamento do host; e o socket Docker permite listar containers. Os três últimos são montados somente leitura pelo Compose.
 
 O timeout do Speedtest é fixo em 180 segundos. A configuração mínima do Compose fica limitada à identidade do agente, MQTT, timezone e `DOCKER_GID`.

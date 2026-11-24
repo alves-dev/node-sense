@@ -7,6 +7,7 @@
 - Local host overview page and JSON status endpoint.
 - Extended system, storage and Docker container telemetry.
 - Per-container Docker memory usage in the local web dashboard, displayed in MB.
+- NodeSense favicon for the web page.
 
 ### Changed
 
