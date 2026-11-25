@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 - 2026-11-25
+
+### Changed
+
+- Machine time is published as text in the format `YYYY-MM-DD HH:MM:SS ±HH:MM`.
+- Memory and storage entities use GB by default; uptime uses days.
+- The system model entity uses `mdi:desktop-tower-monitor`.
+
 ## 0.2.0 - 2026-11-24
 
 ### Added

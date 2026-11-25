@@ -11,7 +11,7 @@ services:
       - "${DOCKER_GID:-999}"
     restart: unless-stopped
     ports:
-      - "9130:9130"
+      - "9131:9130"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:

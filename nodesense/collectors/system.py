@@ -83,13 +83,16 @@ class SystemCollector:
             uptime = round(float(Path("/proc/uptime").read_text().split()[0]), 1)
         except (OSError, ValueError, IndexError):
             pass
+        machine_time = datetime.now(ZoneInfo(self.settings.timezone)).isoformat(timespec="seconds").replace("T", " ")
+        if machine_time[-6:-5] in {"+", "-"}:
+            machine_time = f"{machine_time[:-6]} {machine_time[-6:]}"
         return {
             "hostname": self.settings.agent_name or socket.gethostname(),
             "os": _os_release(self.settings.host_os_release),
             "kernel": platform.release(),
             "model": self._model(),
             "uptime_seconds": uptime,
-            "datetime": datetime.now(ZoneInfo(self.settings.timezone)).isoformat(),
+            "datetime": machine_time,
             "cpu_cores": os.cpu_count(),
             "cpu_usage_pct": self._cpu_usage(),
             "memory_total_bytes": total_memory,
